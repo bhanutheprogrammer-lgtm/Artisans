@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtisanLink — Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>ArtisanLink</h1>
+    <p>Welcome back, or join as an artisan</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="catalog.html">Gallery</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <main>
+    <div class="form-container fade-in-up">
+      <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:1rem;">
+        <button class="btn" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="btn btn-secondary" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required placeholder="you@example.com">
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••">
+
+        <button type="submit" class="btn btn-block" style="margin-top:1.5rem;">Log In</button>
+      </form>
+
+      <form id="signupForm" onsubmit="handleSignup(event)" style="display:none;">
+        <label for="signupName">Full Name</label>
+        <input type="text" id="signupName" required placeholder="Jane Artisan">
+
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" required placeholder="you@example.com">
+
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" required placeholder="••••••••">
+
+        <label for="craftType">Craft Type</label>
+        <input type="text" id="craftType" required placeholder="e.g. Pottery, Weaving">
+
+        <label for="region">Region</label>
+        <input type="text" id="region" required placeholder="e.g. Jaipur, India">
+
+        <button type="submit" class="btn btn-block" style="margin-top:1.5rem;">Create Account</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ArtisanLink Collective</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    function switchTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+
+      if (tab === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        loginTab.className = 'btn';
+        signupTab.className = 'btn btn-secondary';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        loginTab.className = 'btn btn-secondary';
+        signupTab.className = 'btn';
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      showToast('Login successful! (connect to backend to make this real)');
+      setTimeout(() => window.location.href = 'dashboard.html', 1000);
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+      showToast('Account created! (connect to backend to make this real)');
+      setTimeout(() => window.location.href = 'dashboard.html', 1000);
+    }
+  </script>
+</body>
+</html>

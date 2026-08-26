@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtisanLink — Product</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>ArtisanLink</h1>
+    <p>Product Details</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="catalog.html">Gallery</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <main>
+    <div id="productDetail" class="fade-in-up">
+      <div class="skeleton" style="height:300px; border-radius:10px;"></div>
+      <div class="skeleton" style="width:50%; height:2rem; margin-top:1rem;"></div>
+      <div class="skeleton" style="width:80%;"></div>
+    </div>
+
+    <section style="margin-top: 2rem;">
+      <h2 class="section-title">You may also like</h2>
+      <div class="gallery" id="similarProducts"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ArtisanLink Collective</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    fetchProductById(productId).then(product => {
+      const container = document.getElementById('productDetail');
+
+      if (!product) {
+        container.innerHTML = '<div class="empty-state"><p>Product not found.</p></div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <img src="${product.image_url}" alt="${product.title}"
+             style="width:100%; max-height:400px; object-fit:cover; border-radius:10px;">
+
+        ${product.ai_generated ? '<span class="badge" style="margin-top:1rem;">AI Tagged ✨</span>' : ''}
+
+        <h2 style="margin-top:0.5rem;">${product.title}</h2>
+        <p style="color:#666; font-size:1.05rem;">${product.description}</p>
+        <p class="price" style="font-size:1.3rem;">${product.price}</p>
+
+        <div style="margin: 1rem 0;">
+          ${product.tags.map(tag => `<span class="badge" style="background:#d7ccc8; color:#3e2723;">${tag}</span>`).join(' ')}
+        </div>
+
+        <div class="card" style="padding:1rem; max-width:320px; margin-top:1.5rem;">
+          <h3 style="margin:0;">${product.artisan}</h3>
+          <p style="margin:0.25rem 0 0; color:#888;">${product.region}</p>
+        </div>
+
+        <button class="btn" style="margin-top:1.5rem;" onclick="showToast('Contact request sent to artisan!')">
+          Contact Artisan
+        </button>
+      `;
+
+      fetchProducts().then(all => {
+        const similar = all.filter(p => p.category === product.category && p.id !== product.id);
+        const similarGrid = document.getElementById('similarProducts');
+        similarGrid.innerHTML = similar.length
+          ? similar.map(renderProductCard).join('')
+          : '<p style="color:#888;">No similar products yet.</p>';
+      });
+    });
+  </script>
+</body>
+</html>

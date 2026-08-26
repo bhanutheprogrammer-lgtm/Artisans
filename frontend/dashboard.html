@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtisanLink — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>ArtisanLink</h1>
+    <p>Your Artisan Dashboard</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="catalog.html">Gallery</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <main>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <h2 class="section-title" style="margin:0;">My Products</h2>
+      <a class="btn" href="add-product.html">+ Add New Product</a>
+    </div>
+
+    <div class="gallery" id="myProducts"></div>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <p>No products yet — add your first one to get started!</p>
+      <a class="btn" href="add-product.html" style="margin-top:1rem;">+ Add Product</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ArtisanLink Collective</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    fetchProducts().then(products => {
+      const grid = document.getElementById('myProducts');
+      const emptyState = document.getElementById('emptyState');
+
+      if (products.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      grid.innerHTML = products.map(p => `
+        <div class="card fade-in-up">
+          <img src="${p.image_url}" alt="${p.title}">
+          ${p.ai_generated ? '<span class="badge">AI Tagged ✨</span>' : ''}
+          <h3>${p.title}</h3>
+          <p class="price">${p.price}</p>
+          <div style="display:flex; gap:0.5rem; padding: 0 1rem 1rem;">
+            <a class="btn btn-secondary" href="add-product.html?id=${p.id}" style="flex:1; text-align:center;">Edit</a>
+            <button class="btn" style="flex:1; background:#b04a3f;" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    });
+
+    function deleteProduct(id) {
+      if (confirm('Delete this product?')) {
+        showToast('Product deleted (connect to backend to make this real)');
+      }
+    }
+  </script>
+</body>
+</html>
